@@ -9,6 +9,8 @@ namespace PrimeNumbersCalculatorGP
     public class CalculatePrimeNumber
     {
         CalculationResult _calculationResult = null;
+        Dictionary<int, bool> keyValuePairsIncycle = new Dictionary<int, bool>();
+
         public CalculatePrimeNumber()
         {
             _calculationResult = new CalculationResult();
@@ -18,14 +20,27 @@ namespace PrimeNumbersCalculatorGP
             _calculationResult = calculationResult;
         }
 
-        public void Calculate()
+        /// <summary>
+        /// Prime number was calculated.
+        /// </summary>
+        /// <returns>True. if calculated.</returns>
+        public bool Calculate()
         {
-            Dictionary<int,bool> keyValuePairs = new Dictionary<int,bool>();
-            
+            bool primeNumberWasCalculated = false;
             int startNumber = _calculationResult.LastPrimeNumber;
-            //c = a % b;
-
-
+            
+            return primeNumberWasCalculated;
+        }
+        private bool isPrime(int number)
+        {
+            for (int i = 2; i < number; i++)
+            {
+                if (number % i == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
     }

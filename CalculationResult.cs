@@ -17,5 +17,7 @@ namespace PrimeNumbersCalculatorGP
         public int CycleNumber { get => _cycleNumber; set => _cycleNumber = value; }
         public DateTime CycleDuration { get => _cycleDuration; set => _cycleDuration = value; }
         public DateTime WhenPrimeNumberWasFound { get => _whenPrimeNumberWasFound; set => _whenPrimeNumberWasFound = value; }
+
+
     }
 }

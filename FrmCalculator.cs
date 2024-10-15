@@ -21,6 +21,7 @@ namespace PrimeNumbersCalculatorGP
         {
             //var xmlResultSaver = new XMLResultSaver();
             //_calculationResult = 
+            //var xmlResultSaver = new XMLResultSaver();
         }
 
         private void btnStart_Click(object sender, EventArgs e)
