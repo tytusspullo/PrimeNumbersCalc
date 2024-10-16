@@ -32,7 +32,7 @@ namespace PrimeNumbersCalculatorGP
             TimeSpan timeLimit = TimeSpan.FromMinutes(2);
             CancellationTokenSource timeoutToken = new CancellationTokenSource(timeLimit);
             CancellationTokenSource manualOperationToken = new CancellationTokenSource();
-            CancellationTokenSource linkedTokens = CancellationTokenSource.CreateLinkedTokenSource(timeoutToken.Token, manualCts.Token);
+            CancellationTokenSource linkedTokens = CancellationTokenSource.CreateLinkedTokenSource(timeoutToken.Token, manualOperationToken.Token);
 
             Task<long> calculationTask = Task.Run(() => CalculatePrime(linkedTokens.Token), linkedTokens.Token);
             Task.Run(() =>
