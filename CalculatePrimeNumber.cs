@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace PrimeNumbersCalculatorGP
 {
@@ -38,15 +39,26 @@ namespace PrimeNumbersCalculatorGP
 
         public async Task<CalculationResult> CalculateAsync()
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             Task<CalculationResult> calculationTask = Task.Run(() 
                 => CalculatePrime(linkedTokens.Token,_lastCalculationResult.CycleNumber++), linkedTokens.Token);
             try
             {
-                return await calculationTask;
+                var result = await calculationTask;
+                stopwatch.Stop();
+                DateTime duration = DateTime.MinValue + stopwatch.Elapsed;
+                result.CycleDuration = duration;
+                return result;
             }
             catch (OperationCanceledException)
             {
-                 return calculationTask.Result;
+                stopwatch.Stop();
+                var result = calculationTask.Result;
+                DateTime duration = DateTime.MinValue + stopwatch.Elapsed;
+                result.CycleDuration = duration;
+                return result;
             }
             finally
             {
