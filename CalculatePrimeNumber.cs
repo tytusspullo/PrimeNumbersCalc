@@ -9,23 +9,24 @@ namespace PrimeNumbersCalculatorGP
 {
     public class CalculatePrimeNumber
     {
-        CalculationResult _calculationResult = null;
+        CalculationResult _lastCalculationResult = null;
         List<int> primesMarkedInCycle = new List<int>();
 
-        public CalculatePrimeNumber(CalculationResult calculationResult)
+        public CalculatePrimeNumber(CalculationResult lastCalculationResult)
         {
-            _calculationResult = calculationResult;
+            _lastCalculationResult = lastCalculationResult;
         }
 
         /// <summary>
         /// Prime number was calculated.
         /// </summary>
         /// <returns>True. if calculated.</returns>
-        public bool Calculate(out CalculationResult calculationResult)
+        public bool Calculate(ref CalculationResult calculationResult)
         {
+            CalculationResult calcResult = calculationResult;
             bool primeNumberWasCalculated = false;
 
-            TimeSpan timeLimit = TimeSpan.FromMinutes(2);
+            TimeSpan timeLimit = TimeSpan.FromSeconds(10);
             CancellationTokenSource timeoutToken = new CancellationTokenSource(timeLimit);
             CancellationTokenSource manualOperationToken = new CancellationTokenSource();
             CancellationTokenSource linkedTokens = CancellationTokenSource.CreateLinkedTokenSource(timeoutToken.Token, manualOperationToken.Token);
@@ -44,13 +45,15 @@ namespace PrimeNumbersCalculatorGP
             //});
             try
             {
-                calculationTask.Wait(linkedTokens.Token);
-                _calculationResult.LastPrimeNumber = calculationTask.Result;
-                //Console.WriteLine($"Calculation completed. Result: {calculationTask.Result}");
+                calculationTask.Wait(linkedTokens.Token); 
+
+                calculationResult.LastPrimeNumber = calculationTask.Result;
+                if (_lastCalculationResult.LastPrimeNumber != calcResult.LastPrimeNumber)
+                    primeNumberWasCalculated = true;
             }
             catch (OperationCanceledException)
             {
-                //Console.WriteLine("Calculation canceled either manually or after timeout.");
+                //canceled throw exception
             }
             finally
             {
@@ -59,7 +62,6 @@ namespace PrimeNumbersCalculatorGP
                 timeoutToken.Dispose();
             }
 
-            calculationResult = _calculationResult;
             return primeNumberWasCalculated;
         }
         long CalculatePrime(CancellationToken token)
