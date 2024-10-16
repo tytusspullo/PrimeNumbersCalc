@@ -10,13 +10,12 @@ namespace PrimeNumbersCalculatorGP
     public class CalculatePrimeNumber
     {
         CalculationResult _lastCalculationResult = null;
-        long _prime = 0;
+        long _prime = 0;  //primenumber
         DateTime _whenFound = DateTime.MinValue;
         
         CancellationTokenSource timeoutToken = null;
         CancellationTokenSource manualOperationToken = null;
         CancellationTokenSource linkedTokens = null;
-        public event Action OnCancelRequested;
 
         public CalculatePrimeNumber(CalculationResult lastCalculationResult, int defaultCycleLengthInSeconds)
         {
@@ -57,19 +56,16 @@ namespace PrimeNumbersCalculatorGP
         }
         CalculationResult CalculatePrime(CancellationToken token,int cycle)
         {
-            int startNumber = 2;
+            long startNumber = _lastCalculationResult.LastPrimeNumber;
+
             while (!token.IsCancellationRequested)
             {
                 if (IsPrime(startNumber))
                 {
                     _prime = startNumber;
                     _whenFound = DateTime.Now;
-                    startNumber++;
                 }
-                else
-                {
                     startNumber++;
-                }
 
                 if (token.IsCancellationRequested)
                     break;
@@ -81,9 +77,9 @@ namespace PrimeNumbersCalculatorGP
             result.WhenPrimeNumberWasFound = _whenFound;
             return result;
         }
-        private bool IsPrime(int number)
+        private bool IsPrime(long number)
         {
-            for (int i = 2; i < number; i++)
+            for (long i = 2; i < number; i++)
             {
                 if (number % i == 0)
                 {

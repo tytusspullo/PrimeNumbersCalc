@@ -25,11 +25,23 @@ namespace PrimeNumbersCalculatorGP
         {
             if (!isStarted)
             {
-                //var xmlResultRetriver = new XMLResultRetriver();
-                _calculationResult = new CalculationResult();
-                _calculationResult.CycleNumber = 3;
-                DisplayResult(_calculationResult);
+                try
+                {
+                    var xmlResultRetriver = new XMLResultRetriver(fileName);
+                    _calculationResult = xmlResultRetriver.ReadFromXML();
+                }
+                catch (System.IO.IOException)
+                {
+                    MessageBox.Show("There was problem with file read.", "Warning!"
+                                    , MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
 
+                if (_calculationResult == null)
+                {
+                    _calculationResult = new CalculationResult();
+                    _calculationResult.CycleNumber = 1;
+                }
+                DisplayResult(_calculationResult);
             }
             else
             {
@@ -46,8 +58,16 @@ namespace PrimeNumbersCalculatorGP
             var result = await _calculator.CalculateAsync();
             _calculationResult = result;
             //save
-            XMLResultSaver xmlSaver = new XMLResultSaver(result, fileName);
-            xmlSaver.WriteToXML();
+            try 
+            { 
+                XMLResultSaver xmlSaver = new XMLResultSaver(result, fileName);
+                xmlSaver.WriteToXML();
+            }
+            catch (System.IO.IOException)
+            {
+                MessageBox.Show("There was problem with file write.", "Warning!"
+                                , MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
             //display new 
             tbNewCycle.Text = result.CycleNumber.ToString();
             tbNewPrimeNumber.Text = result.LastPrimeNumber.ToString();
