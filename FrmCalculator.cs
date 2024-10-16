@@ -17,7 +17,7 @@ namespace PrimeNumbersCalculatorGP
         string fileName = "results.xml";
         int lastcycle = 0;
         bool isStarted = false;
-        int defaultCycleLength = 10;// 2mins = 120s
+        int defaultCycleLength = 120;// 2mins = 120s
         public FrmCalculator()
         {
             _calculator = new CalculatePrimeNumber(_calculationResult, defaultCycleLength);

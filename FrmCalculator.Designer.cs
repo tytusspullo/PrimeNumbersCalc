@@ -44,6 +44,8 @@
             this.tbNewCycle = new System.Windows.Forms.TextBox();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.lblError = new System.Windows.Forms.Label();
+            this.tbError = new System.Windows.Forms.TextBox();
             this.gbRetriveLastCalculations.SuspendLayout();
             this.gbLast.SuspendLayout();
             this.gbCalculationsCycle.SuspendLayout();
@@ -153,6 +155,8 @@
             // 
             // gbCalculationsCycle
             // 
+            this.gbCalculationsCycle.Controls.Add(this.tbError);
+            this.gbCalculationsCycle.Controls.Add(this.lblError);
             this.gbCalculationsCycle.Controls.Add(this.lblNewCycle);
             this.gbCalculationsCycle.Controls.Add(this.tbNewCycle);
             this.gbCalculationsCycle.Controls.Add(this.btnStop);
@@ -202,6 +206,22 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_ClickAsync);
             // 
+            // lblError
+            // 
+            this.lblError.AutoSize = true;
+            this.lblError.Location = new System.Drawing.Point(31, 111);
+            this.lblError.Name = "lblError";
+            this.lblError.Size = new System.Drawing.Size(32, 13);
+            this.lblError.TabIndex = 14;
+            this.lblError.Text = "Error:";
+            // 
+            // tbError
+            // 
+            this.tbError.Location = new System.Drawing.Point(73, 108);
+            this.tbError.Name = "tbError";
+            this.tbError.Size = new System.Drawing.Size(371, 20);
+            this.tbError.TabIndex = 15;
+            // 
             // FrmCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -239,5 +259,7 @@
         private System.Windows.Forms.TextBox tbNewCycle;
         private System.Windows.Forms.TextBox tbCycleDuration;
         private System.Windows.Forms.TextBox tbWhenPrimeNumberWasFound;
+        private System.Windows.Forms.TextBox tbError;
+        private System.Windows.Forms.Label lblError;
     }
 }
