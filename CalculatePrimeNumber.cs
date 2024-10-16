@@ -69,6 +69,7 @@ namespace PrimeNumbersCalculatorGP
         }
         CalculationResult CalculatePrime(CancellationToken token,int cycle)
         {
+            bool primeWasFound = false;
             long startNumber = _lastCalculationResult.LastPrimeNumber;
 
             while (!token.IsCancellationRequested)
@@ -77,6 +78,7 @@ namespace PrimeNumbersCalculatorGP
                 {
                     _prime = startNumber;
                     _whenFound = DateTime.Now;
+                    primeWasFound = true;
                 }
                     startNumber++;
 
@@ -88,6 +90,7 @@ namespace PrimeNumbersCalculatorGP
             result.CycleNumber = cycle;
             result.LastPrimeNumber = _prime;
             result.WhenPrimeNumberWasFound = _whenFound;
+            result.PrimeNumberWasCalculated = primeWasFound;
             return result;
         }
         private bool IsPrime(long number)

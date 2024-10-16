@@ -70,7 +70,8 @@ namespace PrimeNumbersCalculatorGP
                 MessageBox.Show("There was problem with file write.", "Warning!"
                                 , MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-
+            if (!_calculationResult.PrimeNumberWasCalculated)
+                tbError.Text = "For cycle:" + _calculationResult.CycleNumber.ToString() + " prime number was not found!";
             //display as old now
             DisplayResult(_calculationResult);
 
