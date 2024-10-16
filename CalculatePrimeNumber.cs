@@ -19,7 +19,7 @@ namespace PrimeNumbersCalculatorGP
 
         public CalculatePrimeNumber(CalculationResult lastCalculationResult, int defaultCycleLengthInSeconds)
         {
-            if (_lastCalculationResult == null)
+            if (lastCalculationResult == null)
             {
                 _lastCalculationResult = new CalculationResult();
                 _lastCalculationResult.CycleNumber = 1;
@@ -27,6 +27,7 @@ namespace PrimeNumbersCalculatorGP
             else
             {
                 _lastCalculationResult = lastCalculationResult;
+                _lastCalculationResult.CycleNumber++;
             }
 
             TimeSpan timeLimit = TimeSpan.FromSeconds(defaultCycleLengthInSeconds);

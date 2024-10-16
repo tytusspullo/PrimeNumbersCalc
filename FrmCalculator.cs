@@ -17,8 +17,10 @@ namespace PrimeNumbersCalculatorGP
         string fileName = "results.xml";
         int lastcycle = 0;
         bool isStarted = false;
+        int defaultCycleLength = 10;// 2mins = 120s
         public FrmCalculator()
         {
+            _calculator = new CalculatePrimeNumber(_calculationResult, defaultCycleLength);
             InitializeComponent();
         }
         private void btnRead_Click(object sender, EventArgs e)
@@ -39,7 +41,7 @@ namespace PrimeNumbersCalculatorGP
                 if (_calculationResult == null)
                 {
                     _calculationResult = new CalculationResult();
-                    _calculationResult.CycleNumber = 1;
+                    _calculationResult.CycleNumber = 0;
                 }
                 DisplayResult(_calculationResult);
             }
@@ -54,7 +56,7 @@ namespace PrimeNumbersCalculatorGP
         {
             StartCycle();
 
-            _calculator = new CalculatePrimeNumber(_calculationResult, 10);
+            _calculator = new CalculatePrimeNumber(_calculationResult, defaultCycleLength);
             var result = await _calculator.CalculateAsync();
             _calculationResult = result;
             //save
@@ -68,9 +70,7 @@ namespace PrimeNumbersCalculatorGP
                 MessageBox.Show("There was problem with file write.", "Warning!"
                                 , MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-            //display new 
-            tbNewCycle.Text = result.CycleNumber.ToString();
-            tbNewPrimeNumber.Text = result.LastPrimeNumber.ToString();
+
             //display as old now
             DisplayResult(_calculationResult);
 
@@ -87,20 +87,25 @@ namespace PrimeNumbersCalculatorGP
             isStarted = true;
             btnStart.Enabled = !isStarted;
             btnStop.Enabled = isStarted;
+            //display new 
+            int newCycle = _calculationResult.CycleNumber + 1;
+            tbNewCycle.Text = "Starting cycle:" + newCycle.ToString();
         }
         private void StopCycle()
         {
             isStarted = false;
             btnStart.Enabled = !isStarted;
             btnStop.Enabled = isStarted;
+            //clean display new 
+            tbNewCycle.Text = string.Empty;
         }
         private void DisplayResult(CalculationResult calculationResult)
         { 
             tbCycle.Text = calculationResult.CycleNumber.ToString();
             tbLastPrimeNumber.Text = calculationResult.LastPrimeNumber.ToString();
-            //dtpWhenPrimeNumberWasFound.Value = calculationResult.WhenPrimeNumberWasFound;
-            //dtpCycleDuration.Value = calculationResult.CycleDuration;
+            tbWhenPrimeNumberWasFound.Text = calculationResult.WhenPrimeNumberWasFound.ToLongDateString() 
+                            + " " + calculationResult.WhenPrimeNumberWasFound.ToLongTimeString();
+            tbCycleDuration.Text = calculationResult.CycleDuration.ToLongTimeString();
         }
-
     }
 }
