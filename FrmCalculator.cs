@@ -14,6 +14,7 @@ namespace PrimeNumbersCalculatorGP
     {
         CalculationResult _calculationResult = null;
         CalculatePrimeNumber _calculator = null;
+        int lastcycle = 0;
         bool isStarted = false;
         public FrmCalculator()
         {
@@ -40,8 +41,11 @@ namespace PrimeNumbersCalculatorGP
             btnStart.Enabled = !isStarted;
             btnStop.Enabled = isStarted;
             
-            _calculator= new CalculatePrimeNumber();
-
+            lastcycle++;
+            _calculationResult = new CalculationResult();
+            _calculationResult.CycleNumber = lastcycle;
+            _calculator = new CalculatePrimeNumber(_calculationResult);
+            _calculator.Calculate(out _calculationResult);
 
         }
         private void btnStop_Click(object sender, EventArgs e)

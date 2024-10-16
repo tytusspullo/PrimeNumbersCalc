@@ -10,7 +10,7 @@ namespace PrimeNumbersCalculatorGP
     public class CalculatePrimeNumber
     {
         CalculationResult _calculationResult = null;
-        Dictionary<int, bool> keyValuePairsIncycle = new Dictionary<int, bool>();
+        Dictionary<int, bool> primesMarked = new Dictionary<int, bool>();
 
         public CalculatePrimeNumber()
         {
@@ -67,13 +67,18 @@ namespace PrimeNumbersCalculatorGP
         }
         long CalculatePrime(CancellationToken token)
         {
-            int startNumber = _calculationResult.LastPrimeNumber;
+            int startNumber = 2;
             long result = 0;
             while (!token.IsCancellationRequested)
             {
-                result += 1;
-                for (int i = 0; i < 1000; i++)
-                    result += i;
+                if (IsPrime(startNumber))
+                {
+                    primesMarked.Add(startNumber, true);
+                }
+                else
+                {
+                    startNumber++;
+                }
 
                 if (token.IsCancellationRequested)
                     break;
@@ -81,7 +86,7 @@ namespace PrimeNumbersCalculatorGP
             return result;
         }
 
-        private bool isPrime(int number)
+        private bool IsPrime(int number)
         {
             for (int i = 2; i < number; i++)
             {
