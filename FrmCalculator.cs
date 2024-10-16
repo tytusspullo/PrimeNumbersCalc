@@ -14,6 +14,7 @@ namespace PrimeNumbersCalculatorGP
     {
         CalculationResult _calculationResult = null;
         CalculatePrimeNumber _calculator = null;
+        string fileName = "results.xml";
         int lastcycle = 0;
         bool isStarted = false;
         public FrmCalculator()
@@ -28,7 +29,7 @@ namespace PrimeNumbersCalculatorGP
                 _calculationResult = new CalculationResult();
                 _calculationResult.CycleNumber = 3;
                 DisplayResult(_calculationResult);
-             
+
             }
             else
             {
@@ -39,29 +40,40 @@ namespace PrimeNumbersCalculatorGP
 
         private async void btnStart_ClickAsync(object sender, EventArgs e)
         {
-            isStarted = true;
-            btnStart.Enabled = !isStarted;
-            btnStop.Enabled = isStarted;
-            
-            _calculator = new CalculatePrimeNumber(_calculationResult,10);
+            StartCycle();
+
+            _calculator = new CalculatePrimeNumber(_calculationResult, 10);
             var result = await _calculator.CalculateAsync();
+            _calculationResult = result;
+            //save
+            XMLResultSaver xmlSaver = new XMLResultSaver(result, fileName);
+            xmlSaver.WriteToXML();
             //display new 
             tbNewCycle.Text = result.CycleNumber.ToString();
             tbNewPrimeNumber.Text = result.LastPrimeNumber.ToString();
+            //display as old now
+            DisplayResult(_calculationResult);
 
-            _calculationResult = result;
-            DisplayResult(_calculationResult) ;
-
+            StopCycle();
         }
         private void btnStop_Click(object sender, EventArgs e)
+        {
+            StopCycle();
+            _calculator.CancelManual();
+        }
+
+        private void StartCycle()
+        {
+            isStarted = true;
+            btnStart.Enabled = !isStarted;
+            btnStop.Enabled = isStarted;
+        }
+        private void StopCycle()
         {
             isStarted = false;
             btnStart.Enabled = !isStarted;
             btnStop.Enabled = isStarted;
-
-            _calculator.CancelManual();
         }
-
         private void DisplayResult(CalculationResult calculationResult)
         { 
             tbCycle.Text = calculationResult.CycleNumber.ToString();
