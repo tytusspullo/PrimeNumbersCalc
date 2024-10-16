@@ -12,6 +12,11 @@ namespace PrimeNumbersCalculatorGP
         CalculationResult _lastCalculationResult = null;
         long _prime = 0;
         DateTime _whenFound = DateTime.MinValue;
+        
+        CancellationTokenSource timeoutToken = null;
+        CancellationTokenSource manualOperationToken = null;
+        CancellationTokenSource linkedTokens = null;
+        public event Action OnCancelRequested;
 
         public CalculatePrimeNumber(CalculationResult lastCalculationResult)
         {
@@ -24,37 +29,24 @@ namespace PrimeNumbersCalculatorGP
             {
                 _lastCalculationResult = lastCalculationResult;
             }
-        }
-
-        public CalculationResult Calculate()
-        {
-            //CalculationResult calcResult = calculationResult;
-            bool primeNumberWasCalculated = false;
 
             TimeSpan timeLimit = TimeSpan.FromSeconds(10);
-            CancellationTokenSource timeoutToken = new CancellationTokenSource(timeLimit);
-            CancellationTokenSource manualOperationToken = new CancellationTokenSource();
-            CancellationTokenSource linkedTokens = CancellationTokenSource.CreateLinkedTokenSource(timeoutToken.Token, manualOperationToken.Token);
+            timeoutToken = new CancellationTokenSource(timeLimit);
+            manualOperationToken = new CancellationTokenSource();
+            linkedTokens = CancellationTokenSource.CreateLinkedTokenSource(timeoutToken.Token, manualOperationToken.Token);
+        }
 
-            Task<CalculationResult> calculationTask = Task.Run(() => CalculatePrime(linkedTokens.Token,_lastCalculationResult.CycleNumber++), linkedTokens.Token);
-            //Task.Run(() =>
-            //{
-            //    while (true)
-            //    {
-            //        if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.C)
-            //        {
-            //            manualOperationToken.Cancel();
-            //            break;
-            //        }
-            //    }
-            //});
+        public async Task<CalculationResult> CalculateAsync()
+        {
+            Task<CalculationResult> calculationTask = Task.Run(() 
+                => CalculatePrime(linkedTokens.Token,_lastCalculationResult.CycleNumber++), linkedTokens.Token);
             try
             {
-                calculationTask.Wait(linkedTokens.Token);
+                return await calculationTask;
             }
             catch (OperationCanceledException)
             {
-                //canceled throw exception
+                 return calculationTask.Result;
             }
             finally
             {
@@ -62,8 +54,6 @@ namespace PrimeNumbersCalculatorGP
                 manualOperationToken.Dispose();
                 timeoutToken.Dispose();
             }
-
-            return calculationTask.Result;
         }
         CalculationResult CalculatePrime(CancellationToken token,int cycle)
         {
@@ -91,7 +81,6 @@ namespace PrimeNumbersCalculatorGP
             result.WhenPrimeNumberWasFound = _whenFound;
             return result;
         }
-
         private bool IsPrime(int number)
         {
             for (int i = 2; i < number; i++)
@@ -102,6 +91,14 @@ namespace PrimeNumbersCalculatorGP
                 }
             }
             return true;
+        }
+
+        public void CancelManual()
+        {
+            if (manualOperationToken != null)
+            {
+                manualOperationToken.Cancel();
+            }
         }
 
     }

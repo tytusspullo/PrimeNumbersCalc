@@ -37,15 +37,15 @@ namespace PrimeNumbersCalculatorGP
             }
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private async void btnStart_ClickAsync(object sender, EventArgs e)
         {
             isStarted = true;
             btnStart.Enabled = !isStarted;
             btnStop.Enabled = isStarted;
             
             _calculator = new CalculatePrimeNumber(_calculationResult);
-            var result = _calculator.Calculate();
-            
+            var result = await _calculator.CalculateAsync();
+            tbNewCycle.Text = result.CycleNumber.ToString();
             tbNewPrimeNumber.Text = result.LastPrimeNumber.ToString();
         }
         private void btnStop_Click(object sender, EventArgs e)
@@ -54,6 +54,7 @@ namespace PrimeNumbersCalculatorGP
             btnStart.Enabled = !isStarted;
             btnStop.Enabled = isStarted;
 
+            _calculator.CancelManual();
         }
 
 
