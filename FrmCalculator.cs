@@ -46,7 +46,8 @@ namespace PrimeNumbersCalculatorGP
             _calculationResult.CycleNumber = lastcycle;
             _calculator = new CalculatePrimeNumber(_calculationResult);
             _calculator.Calculate(out _calculationResult);
-
+            
+            tbNewPrimeNumber.Text = _calculationResult.LastPrimeNumber.ToString();
         }
         private void btnStop_Click(object sender, EventArgs e)
         {
@@ -55,5 +56,7 @@ namespace PrimeNumbersCalculatorGP
             btnStop.Enabled = isStarted;
 
         }
+
+
     }
 }
