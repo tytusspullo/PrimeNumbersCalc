@@ -54,14 +54,19 @@ namespace PrimeNumbersCalculatorGP
 
         private async void btnStart_ClickAsync(object sender, EventArgs e)
         {
+            await Start();
+        }
+
+        private async Task Start()
+        {
             StartCycle();
 
             _calculator = new CalculatePrimeNumber(_calculationResult, defaultCycleLength);
             var result = await _calculator.CalculateAsync();
             _calculationResult = result;
             //save
-            try 
-            { 
+            try
+            {
                 XMLResultSaver xmlSaver = new XMLResultSaver(result, fileName);
                 xmlSaver.WriteToXML();
             }
@@ -77,6 +82,7 @@ namespace PrimeNumbersCalculatorGP
 
             StopCycle();
         }
+
         private void btnStop_Click(object sender, EventArgs e)
         {
             StopCycle();
