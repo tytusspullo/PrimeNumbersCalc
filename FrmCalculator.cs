@@ -24,6 +24,8 @@ namespace PrimeNumbersCalculatorGP
         {
             if (!isStarted)
             {
+                _calculationResult = new CalculationResult();
+                _calculationResult.CycleNumber = 3;
                 //var xmlResultSaver = new XMLResultSaver();
                 //_calculationResult = 
                 //var xmlResultSaver = new XMLResultSaver();
@@ -41,13 +43,10 @@ namespace PrimeNumbersCalculatorGP
             btnStart.Enabled = !isStarted;
             btnStop.Enabled = isStarted;
             
-            lastcycle++;
-            _calculationResult = new CalculationResult();
-            _calculationResult.CycleNumber = lastcycle;
             _calculator = new CalculatePrimeNumber(_calculationResult);
-            _calculator.Calculate(out _calculationResult);
+            var result = _calculator.Calculate();
             
-            tbNewPrimeNumber.Text = _calculationResult.LastPrimeNumber.ToString();
+            tbNewPrimeNumber.Text = result.LastPrimeNumber.ToString();
         }
         private void btnStop_Click(object sender, EventArgs e)
         {
