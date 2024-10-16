@@ -13,24 +13,42 @@ namespace PrimeNumbersCalculatorGP
     public partial class FrmCalculator : Form
     {
         CalculationResult _calculationResult = null;
+        CalculatePrimeNumber _calculator = null;
+        bool isStarted = false;
         public FrmCalculator()
         {
             InitializeComponent();
         }
         private void btnRead_Click(object sender, EventArgs e)
         {
-            //var xmlResultSaver = new XMLResultSaver();
-            //_calculationResult = 
-            //var xmlResultSaver = new XMLResultSaver();
+            if (!isStarted)
+            {
+                //var xmlResultSaver = new XMLResultSaver();
+                //_calculationResult = 
+                //var xmlResultSaver = new XMLResultSaver();
+            }
+            else
+            {
+                MessageBox.Show("Calculations in progress, can't read now.", "Information"
+                                    , MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            isStarted = true;
+            btnStart.Enabled = !isStarted;
+            btnStop.Enabled = isStarted;
+            
+            _calculator= new CalculatePrimeNumber();
+
 
         }
-
-        private void button2_Click(object sender, EventArgs e)
+        private void btnStop_Click(object sender, EventArgs e)
         {
+            isStarted = false;
+            btnStart.Enabled = !isStarted;
+            btnStop.Enabled = isStarted;
 
         }
     }

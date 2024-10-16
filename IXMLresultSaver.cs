@@ -8,10 +8,7 @@ namespace PrimeNumbersCalculatorGP
 {
     internal interface IXMLResultSaver
     {
-
         void WriteToXML();
-        CalculationResult ReadFromXML();
-
 
     }
 }

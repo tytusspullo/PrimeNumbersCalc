@@ -30,9 +30,6 @@
         {
             this.gbRetriveLastCalculations = new System.Windows.Forms.GroupBox();
             this.btnRead = new System.Windows.Forms.Button();
-            this.gbCalculationsCycle = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.btnStart = new System.Windows.Forms.Button();
             this.gbLast = new System.Windows.Forms.GroupBox();
             this.lblcycle = new System.Windows.Forms.Label();
             this.dtpWhenPrimeNumberWasFound = new System.Windows.Forms.DateTimePicker();
@@ -42,9 +39,14 @@
             this.lblCycleDuration = new System.Windows.Forms.Label();
             this.tbLastPrimeNumber = new System.Windows.Forms.TextBox();
             this.lblWhenPrimenumberWasFound = new System.Windows.Forms.Label();
+            this.gbCalculationsCycle = new System.Windows.Forms.GroupBox();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.btnStart = new System.Windows.Forms.Button();
+            this.lblNewCycle = new System.Windows.Forms.Label();
+            this.tbNewCycle = new System.Windows.Forms.TextBox();
             this.gbRetriveLastCalculations.SuspendLayout();
-            this.gbCalculationsCycle.SuspendLayout();
             this.gbLast.SuspendLayout();
+            this.gbCalculationsCycle.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbRetriveLastCalculations
@@ -68,38 +70,6 @@
             this.btnRead.Text = "Read from XML";
             this.btnRead.UseVisualStyleBackColor = true;
             this.btnRead.Click += new System.EventHandler(this.btnRead_Click);
-            // 
-            // gbCalculationsCycle
-            // 
-            this.gbCalculationsCycle.Controls.Add(this.button2);
-            this.gbCalculationsCycle.Controls.Add(this.btnStart);
-            this.gbCalculationsCycle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbCalculationsCycle.Location = new System.Drawing.Point(0, 245);
-            this.gbCalculationsCycle.Name = "gbCalculationsCycle";
-            this.gbCalculationsCycle.Size = new System.Drawing.Size(800, 205);
-            this.gbCalculationsCycle.TabIndex = 1;
-            this.gbCalculationsCycle.TabStop = false;
-            this.gbCalculationsCycle.Text = "Retrive Last Calculations";
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(212, 28);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(176, 34);
-            this.button2.TabIndex = 11;
-            this.button2.Text = "Stop cycle";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // btnStart
-            // 
-            this.btnStart.Location = new System.Drawing.Point(21, 28);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(176, 34);
-            this.btnStart.TabIndex = 10;
-            this.btnStart.Text = "Start new cycle";
-            this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // gbLast
             // 
@@ -183,6 +153,57 @@
             this.lblWhenPrimenumberWasFound.TabIndex = 4;
             this.lblWhenPrimenumberWasFound.Text = "When Prime Number Was Found:";
             // 
+            // gbCalculationsCycle
+            // 
+            this.gbCalculationsCycle.Controls.Add(this.lblNewCycle);
+            this.gbCalculationsCycle.Controls.Add(this.tbNewCycle);
+            this.gbCalculationsCycle.Controls.Add(this.btnStop);
+            this.gbCalculationsCycle.Controls.Add(this.btnStart);
+            this.gbCalculationsCycle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbCalculationsCycle.Location = new System.Drawing.Point(0, 245);
+            this.gbCalculationsCycle.Name = "gbCalculationsCycle";
+            this.gbCalculationsCycle.Size = new System.Drawing.Size(800, 205);
+            this.gbCalculationsCycle.TabIndex = 1;
+            this.gbCalculationsCycle.TabStop = false;
+            this.gbCalculationsCycle.Text = "New Calculations";
+            // 
+            // btnStop
+            // 
+            this.btnStop.Enabled = false;
+            this.btnStop.Location = new System.Drawing.Point(212, 28);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(176, 34);
+            this.btnStop.TabIndex = 11;
+            this.btnStop.Text = "Stop cycle";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // btnStart
+            // 
+            this.btnStart.Location = new System.Drawing.Point(21, 28);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(176, 34);
+            this.btnStart.TabIndex = 10;
+            this.btnStart.Text = "Start new cycle";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // lblNewCycle
+            // 
+            this.lblNewCycle.AutoSize = true;
+            this.lblNewCycle.Location = new System.Drawing.Point(31, 83);
+            this.lblNewCycle.Name = "lblNewCycle";
+            this.lblNewCycle.Size = new System.Drawing.Size(36, 13);
+            this.lblNewCycle.TabIndex = 12;
+            this.lblNewCycle.Text = "Cycle:";
+            // 
+            // tbNewCycle
+            // 
+            this.tbNewCycle.Location = new System.Drawing.Point(73, 80);
+            this.tbNewCycle.Name = "tbNewCycle";
+            this.tbNewCycle.Size = new System.Drawing.Size(255, 20);
+            this.tbNewCycle.TabIndex = 13;
+            // 
             // FrmCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -194,9 +215,10 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Prime Numbers Calculator";
             this.gbRetriveLastCalculations.ResumeLayout(false);
-            this.gbCalculationsCycle.ResumeLayout(false);
             this.gbLast.ResumeLayout(false);
             this.gbLast.PerformLayout();
+            this.gbCalculationsCycle.ResumeLayout(false);
+            this.gbCalculationsCycle.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -215,7 +237,9 @@
         private System.Windows.Forms.DateTimePicker dtpWhenPrimeNumberWasFound;
         private System.Windows.Forms.DateTimePicker dtpCycleDuration;
         private System.Windows.Forms.GroupBox gbLast;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Label lblNewCycle;
+        private System.Windows.Forms.TextBox tbNewCycle;
     }
 }
