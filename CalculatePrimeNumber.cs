@@ -15,7 +15,15 @@ namespace PrimeNumbersCalculatorGP
 
         public CalculatePrimeNumber(CalculationResult lastCalculationResult)
         {
-            _lastCalculationResult = lastCalculationResult;
+            if (_lastCalculationResult == null)
+            {
+                _lastCalculationResult = new CalculationResult();
+                _lastCalculationResult.CycleNumber = 1;
+            }
+            else
+            {
+                _lastCalculationResult = lastCalculationResult;
+            }
         }
 
         public CalculationResult Calculate()
