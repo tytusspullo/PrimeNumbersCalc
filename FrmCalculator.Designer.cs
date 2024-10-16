@@ -40,13 +40,12 @@
             this.tbLastPrimeNumber = new System.Windows.Forms.TextBox();
             this.lblWhenPrimenumberWasFound = new System.Windows.Forms.Label();
             this.gbCalculationsCycle = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.tbNewPrimeNumber = new System.Windows.Forms.TextBox();
+            this.lblNewPrimenumber = new System.Windows.Forms.Label();
             this.lblNewCycle = new System.Windows.Forms.Label();
             this.tbNewCycle = new System.Windows.Forms.TextBox();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
-            this.lblNewPrimenumber = new System.Windows.Forms.Label();
-            this.tbNewPrimeNumber = new System.Windows.Forms.TextBox();
             this.gbRetriveLastCalculations.SuspendLayout();
             this.gbLast.SuspendLayout();
             this.gbCalculationsCycle.SuspendLayout();
@@ -160,7 +159,6 @@
             // 
             this.gbCalculationsCycle.Controls.Add(this.tbNewPrimeNumber);
             this.gbCalculationsCycle.Controls.Add(this.lblNewPrimenumber);
-            this.gbCalculationsCycle.Controls.Add(this.button1);
             this.gbCalculationsCycle.Controls.Add(this.lblNewCycle);
             this.gbCalculationsCycle.Controls.Add(this.tbNewCycle);
             this.gbCalculationsCycle.Controls.Add(this.btnStop);
@@ -173,14 +171,21 @@
             this.gbCalculationsCycle.TabStop = false;
             this.gbCalculationsCycle.Text = "New Calculations";
             // 
-            // button1
+            // tbNewPrimeNumber
             // 
-            this.button1.Location = new System.Drawing.Point(460, 33);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(130, 47);
-            this.button1.TabIndex = 14;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.tbNewPrimeNumber.Location = new System.Drawing.Point(136, 115);
+            this.tbNewPrimeNumber.Name = "tbNewPrimeNumber";
+            this.tbNewPrimeNumber.Size = new System.Drawing.Size(192, 20);
+            this.tbNewPrimeNumber.TabIndex = 16;
+            // 
+            // lblNewPrimenumber
+            // 
+            this.lblNewPrimenumber.AutoSize = true;
+            this.lblNewPrimenumber.Location = new System.Drawing.Point(31, 118);
+            this.lblNewPrimenumber.Name = "lblNewPrimenumber";
+            this.lblNewPrimenumber.Size = new System.Drawing.Size(101, 13);
+            this.lblNewPrimenumber.TabIndex = 15;
+            this.lblNewPrimenumber.Text = "New Prime Number:";
             // 
             // lblNewCycle
             // 
@@ -219,22 +224,6 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_ClickAsync);
             // 
-            // lblNewPrimenumber
-            // 
-            this.lblNewPrimenumber.AutoSize = true;
-            this.lblNewPrimenumber.Location = new System.Drawing.Point(31, 118);
-            this.lblNewPrimenumber.Name = "lblNewPrimenumber";
-            this.lblNewPrimenumber.Size = new System.Drawing.Size(101, 13);
-            this.lblNewPrimenumber.TabIndex = 15;
-            this.lblNewPrimenumber.Text = "New Prime Number:";
-            // 
-            // tbNewPrimeNumber
-            // 
-            this.tbNewPrimeNumber.Location = new System.Drawing.Point(136, 115);
-            this.tbNewPrimeNumber.Name = "tbNewPrimeNumber";
-            this.tbNewPrimeNumber.Size = new System.Drawing.Size(192, 20);
-            this.tbNewPrimeNumber.TabIndex = 16;
-            // 
             // FrmCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -272,7 +261,6 @@
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Label lblNewCycle;
         private System.Windows.Forms.TextBox tbNewCycle;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lblNewPrimenumber;
         private System.Windows.Forms.TextBox tbNewPrimeNumber;
     }

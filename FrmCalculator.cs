@@ -24,11 +24,11 @@ namespace PrimeNumbersCalculatorGP
         {
             if (!isStarted)
             {
+                //var xmlResultRetriver = new XMLResultRetriver();
                 _calculationResult = new CalculationResult();
                 _calculationResult.CycleNumber = 3;
-                //var xmlResultSaver = new XMLResultSaver();
-                //_calculationResult = 
-                //var xmlResultSaver = new XMLResultSaver();
+                DisplayResult(_calculationResult);
+             
             }
             else
             {
@@ -43,10 +43,15 @@ namespace PrimeNumbersCalculatorGP
             btnStart.Enabled = !isStarted;
             btnStop.Enabled = isStarted;
             
-            _calculator = new CalculatePrimeNumber(_calculationResult);
+            _calculator = new CalculatePrimeNumber(_calculationResult,10);
             var result = await _calculator.CalculateAsync();
+            //display new 
             tbNewCycle.Text = result.CycleNumber.ToString();
             tbNewPrimeNumber.Text = result.LastPrimeNumber.ToString();
+
+            _calculationResult = result;
+            DisplayResult(_calculationResult) ;
+
         }
         private void btnStop_Click(object sender, EventArgs e)
         {
@@ -57,6 +62,13 @@ namespace PrimeNumbersCalculatorGP
             _calculator.CancelManual();
         }
 
+        private void DisplayResult(CalculationResult calculationResult)
+        { 
+            tbCycle.Text = calculationResult.CycleNumber.ToString();
+            tbLastPrimeNumber.Text = calculationResult.LastPrimeNumber.ToString();
+            //dtpWhenPrimeNumberWasFound.Value = calculationResult.WhenPrimeNumberWasFound;
+            //dtpCycleDuration.Value = calculationResult.CycleDuration;
+        }
 
     }
 }

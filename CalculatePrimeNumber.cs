@@ -18,7 +18,7 @@ namespace PrimeNumbersCalculatorGP
         CancellationTokenSource linkedTokens = null;
         public event Action OnCancelRequested;
 
-        public CalculatePrimeNumber(CalculationResult lastCalculationResult)
+        public CalculatePrimeNumber(CalculationResult lastCalculationResult, int defaultCycleLengthInSeconds)
         {
             if (_lastCalculationResult == null)
             {
@@ -30,7 +30,7 @@ namespace PrimeNumbersCalculatorGP
                 _lastCalculationResult = lastCalculationResult;
             }
 
-            TimeSpan timeLimit = TimeSpan.FromSeconds(10);
+            TimeSpan timeLimit = TimeSpan.FromSeconds(defaultCycleLengthInSeconds);
             timeoutToken = new CancellationTokenSource(timeLimit);
             manualOperationToken = new CancellationTokenSource();
             linkedTokens = CancellationTokenSource.CreateLinkedTokenSource(timeoutToken.Token, manualOperationToken.Token);
