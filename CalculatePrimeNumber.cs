@@ -8,15 +8,23 @@ using System.Diagnostics;
 
 namespace PrimeNumbersCalculatorGP
 {
+    /// <summary>
+    /// Calculate prime numbers, main calculating method CalculateAsync , can be stoped by two ways
+    /// by elapsed time defined in timeoutToken or manualy by user manualOperationtoken. Extra stoper 
+    /// is monitoring how long calculating task lasts , and stoper is stoped when time finishes 
+    /// or by catching exception signaling cancel, and its hold togheter with other values from cycle 
+    /// in calculationResult.
+    /// </summary>
     public class CalculatePrimeNumber
     {
+
         CalculationResult _lastCalculationResult = null;
-        long _prime = 0;  //primenumber
+        long _prime = 0;  //==primenumber
         DateTime _whenFound = DateTime.MinValue;
         
-        CancellationTokenSource timeoutToken = null;
-        CancellationTokenSource manualOperationToken = null;
-        CancellationTokenSource linkedTokens = null;
+        CancellationTokenSource _timeoutToken = null;
+        CancellationTokenSource _manualOperationToken = null;
+        CancellationTokenSource _linkedTokens = null;
 
         public CalculatePrimeNumber(CalculationResult lastCalculationResult, int defaultCycleLengthInSeconds)
         {
@@ -32,9 +40,9 @@ namespace PrimeNumbersCalculatorGP
             }
 
             TimeSpan timeLimit = TimeSpan.FromSeconds(defaultCycleLengthInSeconds);
-            timeoutToken = new CancellationTokenSource(timeLimit);
-            manualOperationToken = new CancellationTokenSource();
-            linkedTokens = CancellationTokenSource.CreateLinkedTokenSource(timeoutToken.Token, manualOperationToken.Token);
+            _timeoutToken = new CancellationTokenSource(timeLimit);
+            _manualOperationToken = new CancellationTokenSource();
+            _linkedTokens = CancellationTokenSource.CreateLinkedTokenSource(_timeoutToken.Token, _manualOperationToken.Token);
         }
 
         public async Task<CalculationResult> CalculateAsync()
@@ -43,7 +51,7 @@ namespace PrimeNumbersCalculatorGP
             stopwatch.Start();
 
             Task<CalculationResult> calculationTask = Task.Run(() 
-                => CalculatePrime(linkedTokens.Token,_lastCalculationResult.CycleNumber++), linkedTokens.Token);
+                => CalculatePrime(_linkedTokens.Token,_lastCalculationResult.CycleNumber++), _linkedTokens.Token);
             try
             {
                 var result = await calculationTask;
@@ -62,9 +70,9 @@ namespace PrimeNumbersCalculatorGP
             }
             finally
             {
-                linkedTokens.Dispose();
-                manualOperationToken.Dispose();
-                timeoutToken.Dispose();
+                _linkedTokens.Dispose();
+                _manualOperationToken.Dispose();
+                _timeoutToken.Dispose();
             }
         }
         CalculationResult CalculatePrime(CancellationToken token,int cycle)
@@ -77,7 +85,7 @@ namespace PrimeNumbersCalculatorGP
                 if (IsPrime(startNumber))
                 {
                     _prime = startNumber;
-                    _whenFound = DateTime.Now;
+                    _whenFound = DateTime.Now; 
                     primeWasFound = true;
                 }
                     startNumber++;
@@ -107,9 +115,9 @@ namespace PrimeNumbersCalculatorGP
 
         public void CancelManual()
         {
-            if (manualOperationToken != null)
+            if (_manualOperationToken != null)
             {
-                manualOperationToken.Cancel();
+                _manualOperationToken.Cancel();
             }
         }
 
