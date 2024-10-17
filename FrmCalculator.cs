@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,36 +8,22 @@ namespace PrimeNumbersCalculatorGP
     {
         CalculationResult _calculationResult = null;
         CalculatePrimeNumber _calculator = null;
-        string fileName = "results.xml";
+        string _fileName = "results.xml";
         int lastcycle = 0;
-        bool isStarted = false;
-        int defaultCycleLength = 120;// 2mins = 120s
+        bool _isStarted = false;
+        int _defaultCycleLength = 10;// 2mins = 120s
+        System.Threading.Timer _timer; // Timer for re-run calculation
         public FrmCalculator()
         {
-            _calculator = new CalculatePrimeNumber(_calculationResult, defaultCycleLength);
+            _calculator = new CalculatePrimeNumber(_calculationResult, _defaultCycleLength);
             InitializeComponent();
+            ReadLastResultFromfile();
         }
         private void btnRead_Click(object sender, EventArgs e)
         {
-            if (!isStarted)
+            if (!_isStarted)
             {
-                try
-                {
-                    var xmlResultRetriver = new XMLResultRetriver(fileName);
-                    _calculationResult = xmlResultRetriver.ReadFromXML();
-                }
-                catch (System.IO.IOException)
-                {
-                    MessageBox.Show("There was problem with file read.", "Warning!"
-                                    , MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-
-                if (_calculationResult == null)
-                {
-                    _calculationResult = new CalculationResult();
-                    _calculationResult.CycleNumber = 0;
-                }
-                DisplayResult(_calculationResult);
+                ReadLastResultFromfile();
             }
             else
             {
@@ -51,23 +31,42 @@ namespace PrimeNumbersCalculatorGP
                                     , MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+        void ReadLastResultFromfile()
+        {
+            try
+            {
+                var xmlResultRetriver = new XMLResultRetriver(_fileName);
+                _calculationResult = xmlResultRetriver.ReadFromXML();
+            }
+            catch (System.IO.IOException)
+            {
+                MessageBox.Show("There was problem with file read.", "Warning!"
+                                , MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
 
+            if (_calculationResult == null)
+            {
+                _calculationResult = new CalculationResult();
+                _calculationResult.CycleNumber = 0;
+            }
+            DisplayResult(_calculationResult);
+        }
         private async void btnStart_ClickAsync(object sender, EventArgs e)
         {
             await Start();
         }
-
         private async Task Start()
         {
+            StopTimer();
             StartCycle();
 
-            _calculator = new CalculatePrimeNumber(_calculationResult, defaultCycleLength);
+            _calculator = new CalculatePrimeNumber(_calculationResult, _defaultCycleLength);
             var result = await _calculator.CalculateAsync();
             _calculationResult = result;
             //save
             try
             {
-                XMLResultSaver xmlSaver = new XMLResultSaver(result, fileName);
+                XMLResultSaver xmlSaver = new XMLResultSaver(result, _fileName);
                 xmlSaver.WriteToXML();
             }
             catch (System.IO.IOException)
@@ -81,28 +80,48 @@ namespace PrimeNumbersCalculatorGP
             DisplayResult(_calculationResult);
 
             StopCycle();
+            StartTimer(); //timer calculating one minute brake
         }
-
         private void btnStop_Click(object sender, EventArgs e)
         {
             StopCycle();
             _calculator.CancelManual();
         }
+        private void StartTimer()
+        {
 
+            if (_timer == null)
+            {
+                _timer = new System.Threading.Timer(TimerCallback, null, 5000, 5000); 
+            }
+        }
+        private void StopTimer()
+        {
+            if (_timer != null)
+            {
+                _timer.Dispose();
+                _timer = null;
+            }
+        }
+        private void TimerCallback(object state)
+        {
+           this.Invoke(new Action(async () => await Start()));
+        }
         private void StartCycle()
         {
-            isStarted = true;
-            btnStart.Enabled = !isStarted;
-            btnStop.Enabled = isStarted;
+            _isStarted = true;
+            btnStart.Enabled = !_isStarted;
+            btnStop.Enabled = _isStarted;
             //display new 
             int newCycle = _calculationResult.CycleNumber + 1;
             tbNewCycle.Text = "Starting cycle:" + newCycle.ToString();
+            
         }
         private void StopCycle()
         {
-            isStarted = false;
-            btnStart.Enabled = !isStarted;
-            btnStop.Enabled = isStarted;
+            _isStarted = false;
+            btnStart.Enabled = !_isStarted;
+            btnStop.Enabled = _isStarted;
             //clean display new 
             tbNewCycle.Text = string.Empty;
         }
